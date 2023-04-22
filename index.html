@@ -1,105 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Points</th>
-            </tr>
-        </thead>
-        <tbody id="table-body">
-            <tr>
-                <td>smsdan</td>
-                <td class="points"></td>
-            </tr>
-            <tr>
-                <td>Vanquish</td>
-                <td class="points"></td>
-            </tr>
-            <tr>
-                <td>Chicken Pet</td>
-                <td class="points"></td>
-            </tr>
-            <tr>
-                <td>WizardWes</td>
-                <td class="points"></td>
-            </tr>
-            <tr>
-                <td>Hans Nolep</td>
-                <td class="points"></td>
-            </tr>
-            <tr>
-                <td>JR</td>
-                <td class="points"></td>
-            </tr>
-            <tr>
-                <td>Drakkar</td>
-                <td class="points"></td>
-            </tr>
-        </tbody>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <tr>
+          <td>smsdan</td>
+          <td class="points"></td>
+        </tr>
+        <tr>
+          <td>Vanquish</td>
+          <td class="points"></td>
+        </tr>
+        <tr>
+          <td>Chicken Pet</td>
+          <td class="points"></td>
+        </tr>
+        <tr>
+          <td>WizardWes</td>
+          <td class="points"></td>
+        </tr>
+        <tr>
+          <td>Hans Nolep</td>
+          <td class="points"></td>
+        </tr>
+        <tr>
+          <td>JR</td>
+          <td class="points"></td>
+        </tr>
+        <tr>
+          <td>Drakkar</td>
+          <td class="points"></td>
+        </tr>
+      </tbody>
     </table>
 
-    <input type="text" id="name-input" placeholder="Enter Name">
+    <input type="text" id="name-input" placeholder="Enter Name" />
     <button id="submit-button">Submit</button>
 
 <script>
- <script>
-const urls = [
-  'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0x1818470b8aa6c5b73cad9dfe15b1e9258819212e',
-  'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0xe4d7811fc629c6630826fa3164fc838aa36bcc4a',
-  'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0xd820c4373ceacef7cb0c60f12e9b4b3d59c1d034',
-  'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0x0e46e507f7afec2d0e8605b44a1b7f3f8d8524e5',
-  'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0x4637f5fcf305eb9c00257e657b89cf8d9dab12ac',
-  'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0xbeedfb58a95fca3643bf21685c7c092fc5bd7f0b',
-  'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0x1bc6dc4e3a5aae6ef4e61e1a614b2411c17215d4'
-];
+  const urls = [
+    'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0x1818470b8aa6c5b73cad9dfe15b1e9258819212e',
+    'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0xe4d7811fc629c6630826fa3164fc838aa36bcc4a',
+    'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0xd820c4373ceacef7cb0c60f12e9b4b3d59c1d034',
+    'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0x0e46e507f7afec2d0e8605b44a1b7f3f8d8524e5',
+    'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0x4637f5fcf305eb9c00257e657b89cf8d9dab12ac',
+    'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0xbeedfb58a95fca3643bf21685c7c092fc5bd7f0b',
+    'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0x1bc6dc4e3a5aae6ef4e61e1a614b2411c17215d4'
+  ];
 
-// Функция для получения данных по URL
-const fetchData = async (url) => {
-  const response = await fetch(url);
-  const data = await response.json();
-  const points = data.points;
-  return points;
-};
+  const fetchData = async (url) => {
+    const response = await fetch(url);
+    const data = await response.json();
+    const points = data.points;
+    return points;
+  };
 
-// Функция для создания таблицы с данными
-const createTable = () => {
-  const nameInput = document.getElementById('name-input');
-  const tableBody = document.getElementById('table-body');
+  const createTable = () => {
+    const nameInput = document.getElementById('name-input');
+    const tableBody = document.getElementById('table-body');
 
-  // Получаем данные по всем URL в списке и формируем массив объектов с именами и очками
-  Promise.all(urls.map(fetchData)).then((points) => {
-    const tableData = points.map((point, index) => {
-      const name = document.querySelectorAll('#table-body tr td:first-child')[index].textContent;
-      return { name, points: point };
-    });
-    tableBody.innerHTML = '';
-    // Заполняем таблицу данными
-    tableData.forEach((row) => {
-      const tr = document.createElement('tr');
-      const nameTd = document.createElement('td');
-      const pointsTd = document.createElement('td');
-      nameTd.textContent = row.name;
-      pointsTd.textContent = row.points || '-';
-      tr.appendChild(nameTd);
-      tr.appendChild(pointsTd);
-      tableBody.appendChild(tr);
-    });
-  }).catch((error) => {
-    console.error(error);
-  });
-};
+    Promise.all(urls.map(fetchData))
+      .then((points) => {
+        const tableData = points.map((point, index) => {
+          const name = document.querySelectorAll('#table-body tr td:first-child')[index].textContent;
+          return { name, points: point };
+        });
+        tableBody.innerHTML = '';
+        tableData.forEach((row) => {
+          const tr = document.createElement('tr');
+          const nameTd = document.createElement('td');
+          const pointsTd = document.createElement('td');
+          nameTd.textContent = row.name;
+          pointsTd.textContent = row.points || '-';
+          tr.appendChild(nameTd);
+          tr.appendChild(pointsTd);
+          tableBody.appendChild(tr);
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
-// Назначаем функцию createTable на обработку события клика по кнопке
-const submitButton = document.getElementById('submit-button');
-submitButton.addEventListener('click', createTable);
+  const submitButton = document.getElementById('submit-button');
+  submitButton.addEventListener('click', createTable);
 </script>
 </body>
 </html>
