@@ -95,6 +95,17 @@ const createTable = () => {
 
 const submitButton = document.getElementById('submit-button');
 submitButton.addEventListener('click', createTable);
+    
+tableData.forEach((row) => {
+  const tr = document.createElement('tr');
+  const nameTd = document.createElement('td');
+  const pointsTd = document.createElement('td');
+  nameTd.textContent = row.name;
+  pointsTd.textContent = row.points || '-';
+  tr.appendChild(nameTd);
+  tr.appendChild(pointsTd);
+  tableBody.appendChild(tr);
+});
 </script>
 </body>
 </html>
