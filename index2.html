@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head> 
+  <body>
+    <style>
+ table {
+        margin: 0 auto;
+        text-align: center; 
+        border-collapse: collapse; 
+        border: 1px solid black; 
+      }
+      
+      th, td {
+        border: 1px solid black; /* Граница ячеек */
+      }
+    </style>
+    <input type="text" id="name-input" placeholder="Enter Name" />
+    <button id="submit-button">Submit</button>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <tr>
+          <td>Vanquish</td>
+          <td class="points"></td>
+        </tr>
+        <tr>
+          <td>Chicken Pet</td>
+          <td class="points"></td>
+        </tr>
+        <tr>
+          <td>WizardWes</td>
+          <td class="points"></td>
+        </tr>
+        <tr>
+          <td>smsdan</td>
+          <td class="points"></td>
+        </tr>
+        <tr>
+          <td>Ylistavi</td>
+          <td class="points"></td>
+        </tr>
+      </tbody>
+    </table>
+
+<script>
+const urls = [
+  'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0xe4d7811fc629c6630826fa3164fc838aa36bcc4a',
+  'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0xd820c4373ceacef7cb0c60f12e9b4b3d59c1d034',
+  'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0x0e46e507f7afec2d0e8605b44a1b7f3f8d8524e5',
+  'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0x1818470b8aa6c5b73cad9dfe15b1e9258819212e',
+  'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0xe665e9c2fb6309bf0db80b80cf9230e31a0bd491'
+];
+
+const fetchData = async (url) => {
+  const response = await fetch(url);
+  const data = await response.json();
+  const points = data.points;
+  return points;
+};
+
+const createTable = async () => {
+  const nameInput = document.getElementById('name-input');
+  const tableBody = document.getElementById('table-body');
+  const points = await Promise.all(urls.map(fetchData));
+  const tableData = [];
+  document.querySelectorAll('#table-body tr td:first-child').forEach((td, index) => {
+    const name = td.textContent;
+    const point = points[index] || '-';
+    tableData.push({ name, point });
+  });
+  tableBody.innerHTML = '';
+  tableData.forEach((row) => {
+    const tr = document.createElement('tr');
+    const nameTd = document.createElement('td');
+    const pointTd = document.createElement('td');
+    nameTd.textContent = row.name;
+    pointTd.textContent = row.point;
+    tr.appendChild(nameTd);
+    tr.appendChild(pointTd);
+    tableBody.appendChild(tr);
+  });
+};
+
+const submitButton = document.getElementById('submit-button');
+submitButton.addEventListener('click', createTable);
+
+createTable();
+</script>
+</body>
+</html>
