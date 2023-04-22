@@ -70,31 +70,30 @@ const fetchData = async (url) => {
 const createTable = async () => {
   const nameInput = document.getElementById('name-input');
   const tableBody = document.getElementById('table-body');
-
-  try {
-    const points = await Promise.all(urls.map(fetchData));
-    const tableData = points.map((point, index) => {
-      const name = document.querySelectorAll('#table-body tr td:first-child')[index].textContent;
-      return { name, points: point };
-    });
-    tableBody.innerHTML = '';
-    tableData.forEach((row) => {
-      const tr = document.createElement('tr');
-      const nameTd = document.createElement('td');
-      const pointsTd = document.createElement('td');
-      nameTd.textContent = row.name;
-      pointsTd.textContent = row.points || '-';
-      tr.appendChild(nameTd);
-      tr.appendChild(pointsTd);
-      tableBody.appendChild(tr);
-    });
-  } catch (error) {
-    console.error(error);
-  }
+  const points = await Promise.all(urls.map(fetchData));
+  const tableData = [];
+  document.querySelectorAll('#table-body tr td:first-child').forEach((td, index) => {
+    const name = td.textContent;
+    const point = points[index] || '-';
+    tableData.push({ name, point });
+  });
+  tableBody.innerHTML = '';
+  tableData.forEach((row) => {
+    const tr = document.createElement('tr');
+    const nameTd = document.createElement('td');
+    const pointTd = document.createElement('td');
+    nameTd.textContent = row.name;
+    pointTd.textContent = row.point;
+    tr.appendChild(nameTd);
+    tr.appendChild(pointTd);
+    tableBody.appendChild(tr);
+  });
 };
 
 const submitButton = document.getElementById('submit-button');
 submitButton.addEventListener('click', createTable);
+
+createTable();
 </script>
 </body>
 </html>
