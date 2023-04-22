@@ -51,7 +51,7 @@
 
 <script>
  <script>
-       const urls = [
+const urls = [
   'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0x1818470b8aa6c5b73cad9dfe15b1e9258819212e',
   'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0xe4d7811fc629c6630826fa3164fc838aa36bcc4a',
   'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0xd820c4373ceacef7cb0c60f12e9b4b3d59c1d034',
@@ -61,6 +61,7 @@
   'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0x1bc6dc4e3a5aae6ef4e61e1a614b2411c17215d4'
 ];
 
+// Функция для получения данных по URL
 const fetchData = async (url) => {
   const response = await fetch(url);
   const data = await response.json();
@@ -68,22 +69,25 @@ const fetchData = async (url) => {
   return points;
 };
 
+// Функция для создания таблицы с данными
 const createTable = () => {
   const nameInput = document.getElementById('name-input');
   const tableBody = document.getElementById('table-body');
 
+  // Получаем данные по всем URL в списке и формируем массив объектов с именами и очками
   Promise.all(urls.map(fetchData)).then((points) => {
     const tableData = points.map((point, index) => {
       const name = document.querySelectorAll('#table-body tr td:first-child')[index].textContent;
       return { name, points: point };
     });
     tableBody.innerHTML = '';
+    // Заполняем таблицу данными
     tableData.forEach((row) => {
       const tr = document.createElement('tr');
       const nameTd = document.createElement('td');
       const pointsTd = document.createElement('td');
       nameTd.textContent = row.name;
-      pointsTd.textContent = row.points;
+      pointsTd.textContent = row.points || '-';
       tr.appendChild(nameTd);
       tr.appendChild(pointsTd);
       tableBody.appendChild(tr);
@@ -93,19 +97,9 @@ const createTable = () => {
   });
 };
 
+// Назначаем функцию createTable на обработку события клика по кнопке
 const submitButton = document.getElementById('submit-button');
 submitButton.addEventListener('click', createTable);
-    
-tableData.forEach((row) => {
-  const tr = document.createElement('tr');
-  const nameTd = document.createElement('td');
-  const pointsTd = document.createElement('td');
-  nameTd.textContent = row.name;
-  pointsTd.textContent = row.points || '-';
-  tr.appendChild(nameTd);
-  tr.appendChild(pointsTd);
-  tableBody.appendChild(tr);
-});
 </script>
 </body>
 </html>
