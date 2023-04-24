@@ -82,6 +82,9 @@ const createTable = async () => {
     const point = points[index] || '-';
     tableData.push({ name, point });
   });
+  
+  tableData.sort((a, b) => b.point - a.point);
+  
   tableBody.innerHTML = '';
   tableData.forEach((row) => {
     const tr = document.createElement('tr');
