@@ -8,7 +8,7 @@
   </head> 
   <body>
     <style>
- table {
+      table {
         margin: 0 auto;
         text-align: center; 
         border-collapse: collapse; 
@@ -23,7 +23,7 @@
     <button id="submit-button">Submit</button>
     <button onclick="window.location.href='index.html'">1</button>
     <button onclick="window.location.href='index2.html'">2</button>
-     <button onclick="window.location.href='index3.html'">3</button>
+    <button onclick="window.location.href='index3.html'">3</button>
     <a class="button" href="https://discord.com/users/406150137786925067" target="_blank">Add Your Address</a>
     <table>
       <thead>
@@ -82,6 +82,10 @@ const createTable = async () => {
     const point = points[index] || '-';
     tableData.push({ name, point });
   });
+  
+  // Сортировка по убыванию количества очков
+  tableData.sort((a, b) => b.point - a.point);
+  
   tableBody.innerHTML = '';
   tableData.forEach((row) => {
     const tr = document.createElement('tr');
