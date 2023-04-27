@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head> 
+  <body>
+    <style>
+ table {
+        margin: 0 auto;
+        text-align: center; 
+        border-collapse: collapse; 
+        border: 1px solid black; 
+      }
+      
+      th, td {
+        border: 1px solid black; /* Граница ячеек */
+      }
+    </style>
+    <input type="text" id="name-input" placeholder="Enter Name" />
+    <button id="submit-button">Submit</button>
+    <button onclick="window.location.href='index.html'">1</button>
+    <button onclick="window.location.href='index2.html'">2</button>
+    <button onclick="window.location.href='index3.html'">3</button>
+    <button onclick="window.location.href='index4.html'">4</button>
+    <a class="button" href="https://discord.com/users/406150137786925067" target="_blank">Add Your Address</a>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <tr>
+          <td>raspberry [BOT]</td>
+          <td class="points"></td>
+        </tr>
+      </tbody>
+    </table>
+
+<script>
+const urls = [
+  'https://pixels-data.herokuapp.com/v1/tastemakerz/points?eth=0x31f1a092a351d8c42b365059c4464ab1b6669300',
+
+];
+
+const fetchData = async (url) => {
+  const response = await fetch(url);
+  const data = await response.json();
+  const points = data.points;
+  return points;
+};
+
+const createTable = async () => {
+  const nameInput = document.getElementById('name-input');
+  const tableBody = document.getElementById('table-body');
+  const points = await Promise.all(urls.map(fetchData));
+  const tableData = [];
+  document.querySelectorAll('#table-body tr td:first-child').forEach((td, index) => {
+    const name = td.textContent;
+    const point = points[index] || '-';
+    tableData.push({ name, point });
+  });
+  
+  tableData.sort((a, b) => b.point - a.point);
+  
+  tableBody.innerHTML = '';
+  tableData.forEach((row) => {
+    const tr = document.createElement('tr');
+    const nameTd = document.createElement('td');
+    const pointTd = document.createElement('td');
+    nameTd.textContent = row.name;
+    pointTd.textContent = row.point;
+    tr.appendChild(nameTd);
+    tr.appendChild(pointTd);
+    tableBody.appendChild(tr);
+  });
+};
+
+const submitButton = document.getElementById('submit-button');
+submitButton.addEventListener('click', createTable);
+
+createTable();
+</script>
+</body>
+</html>
